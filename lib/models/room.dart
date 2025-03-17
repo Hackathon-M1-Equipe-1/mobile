@@ -6,7 +6,7 @@ class Room {
   final bool isActive;
   final List<Device> devicesList;
 
-  Room({
+  const Room({
     required this.name,
     required this.familyMembers,
     this.isActive = false,
@@ -15,4 +15,18 @@ class Room {
 
   // Getter to dynamically calculate number of devices
   int get devices => devicesList.length;
+
+  Room copyWith({
+    String? name,
+    int? familyMembers,
+    bool? isActive,
+    List<Device>? devicesList,
+  }) {
+    return Room(
+      name: name ?? this.name,
+      familyMembers: familyMembers ?? this.familyMembers,
+      isActive: isActive ?? this.isActive,
+      devicesList: devicesList ?? this.devicesList,
+    );
+  }
 }

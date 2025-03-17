@@ -13,15 +13,20 @@ class DeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: isDarkMode
+                ? Colors.black.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -34,12 +39,12 @@ class DeviceCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: theme.colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               _getIconData(device.name),
-              color: Colors.deepOrange,
+              color: theme.colorScheme.primary,
               size: 24,
             ),
           ),
@@ -51,16 +56,17 @@ class DeviceCard extends StatelessWidget {
               children: [
                 Text(
                   device.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
                 ),
                 Text(
                   device.value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey,
+                    color: theme.textTheme.bodySmall?.color,
                   ),
                 ),
               ],
@@ -71,8 +77,10 @@ class DeviceCard extends StatelessWidget {
             value: device.isActive,
             onChanged: onToggle,
             activeColor: Colors.white,
-            activeTrackColor: Colors.deepOrange,
-            inactiveTrackColor: Colors.grey.withOpacity(0.3),
+            activeTrackColor: theme.colorScheme.primary,
+            inactiveTrackColor: isDarkMode
+                ? Colors.grey.shade800
+                : Colors.grey.withOpacity(0.3),
             inactiveThumbColor: Colors.white,
           ),
         ],
@@ -99,6 +107,8 @@ class DeviceCard extends StatelessWidget {
         return Icons.videocam;
       case 'microwave':
         return Icons.microwave;
+      case 'coffee machine':
+        return Icons.coffee;
       default:
         return Icons.devices;
     }
