@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/room.dart';
-import '../models/device.dart';
+import 'package:hackaton_m1_team1/models/room.dart';
+import 'package:hackaton_m1_team1/models/device.dart';
 
 class RoomProvider extends ChangeNotifier {
   List<Room> _rooms = [];

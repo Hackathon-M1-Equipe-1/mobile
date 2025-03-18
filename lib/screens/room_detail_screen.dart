@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/room_provider.dart';
-import '../widgets/device_card.dart';
-import '../widgets/stat_card.dart';
+import 'package:hackaton_m1_team1/providers/room_provider.dart';
+import 'package:hackaton_m1_team1/widgets/device_card.dart';
+import 'package:hackaton_m1_team1/widgets/stat_card.dart';
 
 class RoomDetailScreen extends StatelessWidget {
   final int roomIndex;
