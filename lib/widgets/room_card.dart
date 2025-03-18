@@ -47,7 +47,6 @@ class RoomCard extends StatelessWidget {
                 color: theme.textTheme.bodyLarge?.color,
               ),
             ),
-            const SizedBox(height: 8),
             Text(
               '',
               style: TextStyle(
@@ -55,7 +54,6 @@ class RoomCard extends StatelessWidget {
                 color: theme.textTheme.bodySmall?.color,
               ),
             ),
-            const SizedBox(height: 24),
             Text(
               '${room.devices} Devices',
               style: TextStyle(
@@ -63,9 +61,9 @@ class RoomCard extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 16),
+            Spacer(),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.bottomRight,
               child: Switch(
                 value: room.isActive,
                 onChanged: onToggle,

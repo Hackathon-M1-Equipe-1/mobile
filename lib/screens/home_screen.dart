@@ -23,6 +23,18 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isRecording = false;
 
   @override
+  void initState() {
+    audioRecord = AudioRecorder();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioRecord.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
@@ -210,13 +222,13 @@ class _HomeScreenState extends State<HomeScreen> {
         _isRecording = true;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Recording started... Keep holding to continue'),
-          duration: Duration(seconds: 1),
-          backgroundColor: Colors.deepOrange,
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Recording started... Keep holding to continue'),
+      //     duration: Duration(seconds: 1),
+      //     backgroundColor: Colors.deepOrange,
+      //   ),
+      // );
 
       if (await audioRecord.hasPermission()) {
         final tempDir = Directory.systemTemp;
@@ -253,13 +265,13 @@ class _HomeScreenState extends State<HomeScreen> {
           audioPath = path;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Recording stopped'),
-            duration: Duration(seconds: 1),
-            backgroundColor: Colors.grey,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text('Recording stopped'),
+        //     duration: Duration(seconds: 1),
+        //     backgroundColor: Colors.grey,
+        //   ),
+        // );
 
         if (path != null && File(path).existsSync()) {
           SpeechToTextService sttService = SpeechToTextService();
