@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/room.dart';
+import 'package:hackaton_m1_team1/models/room.dart';
 
 class RoomCard extends StatelessWidget {
   final Room room;
@@ -49,7 +49,7 @@ class RoomCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '${room.familyMembers} family members have access',
+              '',
               style: TextStyle(
                 fontSize: 12,
                 color: theme.textTheme.bodySmall?.color,

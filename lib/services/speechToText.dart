@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 
 class SpeechToTextService {
   final String apiKey = 'lUqF3a2gWsMEDTLxXfx_OpsmZncBzEN7CRCDqxid7NDx';
-  final String url =
-      'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/b6160dbe-10e5-4f02-8eeb-ffdc84a8d6b3/v1/recognize?model=fr-FR';
+  final String url = 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/b6160dbe-10e5-4f02-8eeb-ffdc84a8d6b3/v1/recognize?model=fr-FR';
 
   Future<String> speechToText(String filePath) async {
     try {
@@ -21,7 +20,7 @@ class SpeechToTextService {
           'Content-Type': 'audio/flac; charset=UTF-8',
           // Ensure the format matches your recording
           'Authorization':
-          'Basic ' + base64Encode(utf8.encode('apikey:$apiKey')),
+          'Basic ${base64Encode(utf8.encode('apikey:$apiKey'))}',
         },
         body: audioBytes,
       );

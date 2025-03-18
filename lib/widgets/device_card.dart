@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/device.dart';
+import 'package:hackaton_m1_team1/models/device.dart';
 
 class DeviceCard extends StatelessWidget {
   final Device device;
