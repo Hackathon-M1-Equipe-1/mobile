@@ -52,27 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, settingsProvider, child) {
                       return Row(
                         children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.grey,
-                            child: Icon(Icons.person, color: Colors.white),
-                          ),
                           const SizedBox(width: 12),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Hi ${settingsProvider.username}',
+                                'Welcome home!',
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Text(
-                                'Welcome to Home',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
                                 ),
                               ),
                             ],

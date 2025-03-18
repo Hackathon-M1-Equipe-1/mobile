@@ -19,7 +19,7 @@ class RoomProvider extends ChangeNotifier {
   void _initializeRooms() {
     _rooms = [
       Room(
-        name: 'Home',
+        name: 'Living Room',
         familyMembers: 4,
         isActive: true,
         devicesList: [
