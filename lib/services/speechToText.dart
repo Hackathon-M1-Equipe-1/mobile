@@ -2,10 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SpeechToTextService {
-  final String apiKey = 'lUqF3a2gWsMEDTLxXfx_OpsmZncBzEN7CRCDqxid7NDx';
-  final String url = 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/b6160dbe-10e5-4f02-8eeb-ffdc84a8d6b3/v1/recognize?model=fr-FR';
+  final String apiKey = dotenv.env['API_KEY'] ?? '';
+  final String url = dotenv.env['URL'] ?? '';
+
+  Future<void> loadDotenv() async {
+    await dotenv.load();
+  }
 
   Future<String> speechToText(String filePath) async {
     try {
