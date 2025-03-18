@@ -5,11 +5,20 @@ import '../providers/settings_provider.dart';
 import '../widgets/room_card.dart';
 import 'room_detail_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isRecording = false;
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -108,6 +117,71 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+      // Add the recording button at the bottom center of the screen
+      floatingActionButton: GestureDetector(
+        onLongPressStart: (_) => _startRecording(),
+        onLongPressEnd: (_) => _stopRecording(),
+        child: Container(
+          height: 64,
+          width: 64,
+          decoration: BoxDecoration(
+            color: _isRecording ? Colors.red : Colors.deepOrange,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Icon(
+            Icons.mic,
+            color: Colors.white,
+            size: 32,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  // Method to start recording
+  void _startRecording() {
+    setState(() {
+      _isRecording = true;
+    });
+
+    // Show visual feedback
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Recording started... Keep holding to continue'),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.deepOrange,
+      ),
+    );
+
+    // Here you would implement the actual recording logic
+    // For example: record.start();
+  }
+
+  // Method to stop recording
+  void _stopRecording() {
+    setState(() {
+      _isRecording = false;
+    });
+
+    // Show visual feedback
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Recording stopped'),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.grey,
+      ),
+    );
+
+    // Here you would implement the stop recording logic
+    // For example: record.stop();
   }
 }

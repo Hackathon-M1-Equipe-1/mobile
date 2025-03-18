@@ -28,29 +28,6 @@ class RoomProvider extends ChangeNotifier {
           Device(name: 'AC', value: '24°C Temperature', icon: 'assets/icons/ac.png', isActive: true),
         ],
       ),
-      Room(
-        name: 'Kitchen',
-        familyMembers: 2,
-        isActive: true,
-        devicesList: [
-          Device(name: 'Light', value: '60% Brightness', icon: 'assets/icons/light.png', isActive: true),
-          Device(name: 'Refrigerator', value: '5°C Temperature', icon: 'assets/icons/fridge.png', isActive: true),
-          Device(name: 'Microwave', value: 'Off', icon: 'assets/icons/microwave.png'),
-          Device(name: 'Coffee Machine', value: 'Standby', icon: 'assets/icons/coffee.png'),
-        ],
-      ),
-      Room(
-        name: 'Bedroom',
-        familyMembers: 3,
-        isActive: false,
-        devicesList: [
-          Device(name: 'Lamp', value: '65% Brightness', icon: 'assets/icons/lamp.png', isActive: true),
-          Device(name: 'TV', value: '37% Volume', icon: 'assets/icons/tv.png'),
-          Device(name: 'AC', value: '24°C Temperature', icon: 'assets/icons/ac.png', isActive: true),
-          Device(name: 'Fridge', value: '5°C Temperature', icon: 'assets/icons/fridge.png', isActive: true),
-          Device(name: 'CCTV Cam.', value: 'Left/Right : 96.4° & Up/Down : 86.2°', icon: 'assets/icons/cctv.png'),
-        ],
-      ),
     ];
   }
 
