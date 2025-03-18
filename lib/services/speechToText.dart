@@ -50,7 +50,7 @@ class SpeechToTextService {
   }
 
   Future<void> sendCommand(String transcription) async {
-    final url = 'http://10.70.3.185:3000/voice-command';
+    final url = dotenv.env['ROUTE_URL'] ?? '';
 
     try {
       await http.post(
