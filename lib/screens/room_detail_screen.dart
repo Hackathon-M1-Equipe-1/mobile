@@ -49,23 +49,25 @@ class RoomDetailScreen extends StatelessWidget {
                             icon: const Icon(Icons.arrow_back, color: Colors.white),
                             onPressed: () => Navigator.pop(context),
                           ),
-                          Text(
-                            room.name,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                room.name,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.settings, color: Colors.white),
-                            onPressed: () {},
-                          ),
+                          // Add an invisible widget to balance the layout
+                          SizedBox(width: 48), // Width matching the IconButton
                         ],
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        '${room.familyMembers} family members have access',
+                        '',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white70,
