@@ -6,10 +6,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SpeechToTextService {
   final String apiKey = dotenv.env['API_KEY'] ?? '';
-  final String url = dotenv.env['URL'] ?? '';
+  final String envUrl = dotenv.env['URL'] ?? '';
+  late String url;
 
   Future<void> loadDotenv() async {
     await dotenv.load();
+    url = '$envUrl/v1/recognize?model=fr-FR';
   }
 
   Future<String> speechToText(String filePath) async {
