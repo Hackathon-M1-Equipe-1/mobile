@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/room_provider.dart';
-import '../providers/settings_provider.dart';
-import '../widgets/room_card.dart';
-import 'room_detail_screen.dart';
+import 'package:record/record.dart';
+import 'package:hackaton_m1_team1/providers/room_provider.dart';
+import 'package:hackaton_m1_team1/providers/settings_provider.dart';
+import 'package:hackaton_m1_team1/widgets/room_card.dart';
+import 'package:hackaton_m1_team1/screens/room_detail_screen.dart';
+import 'package:hackaton_m1_team1/services/speechToText.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late AudioRecorder audioRecord;
+  String? audioPath;
+  String? transcription;
   bool _isRecording = false;
 
   @override
@@ -34,10 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
+                        child: Icon(Icons.person, color: Colors.white),
                       ),
                       const SizedBox(width: 12),
                       Column(
@@ -52,10 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const Text(
                             'Welcome to Home',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -86,12 +87,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   final rooms = roomProvider.rooms;
                   return Expanded(
                     child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.85,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.85,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
                       itemCount: rooms.length,
                       itemBuilder: (context, index) {
                         return RoomCard(
@@ -100,7 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => RoomDetailScreen(roomIndex: index),
+                                builder:
+                                    (context) =>
+                                        RoomDetailScreen(roomIndex: index),
                               ),
                             );
                           },
@@ -136,11 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          child: Icon(
-            Icons.mic,
-            color: Colors.white,
-            size: 32,
-          ),
+          child: Icon(Icons.mic, color: Colors.white, size: 32),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -148,40 +148,67 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Method to start recording
-  void _startRecording() {
-    setState(() {
-      _isRecording = true;
-    });
+  Future<void> _startRecording() async {
+    try {
+      setState(() {
+        _isRecording = true;
+      });
 
-    // Show visual feedback
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Recording started... Keep holding to continue'),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.deepOrange,
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Recording started... Keep holding to continue'),
+          duration: Duration(seconds: 1),
+          backgroundColor: Colors.deepOrange,
+        ),
+      );
 
-    // Here you would implement the actual recording logic
-    // For example: record.start();
+      if (await audioRecord.hasPermission()) {
+        final tempDir = Directory.systemTemp;
+        final filePath = '${tempDir.path}/audio.m4a';
+
+        final recordConfig = RecordConfig(
+          encoder: AudioEncoder.flac,
+          bitRate: 128000,
+          sampleRate: 44100,
+        );
+
+        await audioRecord.start(recordConfig, path: filePath);
+
+        setState(() {
+          _isRecording = true;
+          audioPath = filePath;
+          transcription = null;
+        });
+      } else {
+        throw Exception('Permission non accordée !');
+      }
+    } catch (e) {
+      throw Exception('Erreur lors du démarrage de l\'enregistrement : $e');
+    }
   }
 
-  // Method to stop recording
-  void _stopRecording() {
-    setState(() {
-      _isRecording = false;
-    });
+  Future<void> _stopRecording() async {
+    try {
+      if (await audioRecord.isRecording()) {
+        final path = await audioRecord.stop();
+        setState(() {
+          _isRecording = false;
+          audioPath = path;
+        });
 
-    // Show visual feedback
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Recording stopped'),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.grey,
-      ),
-    );
+        if (path != null && File(path).existsSync()) {
+          SpeechToTextService sttService = SpeechToTextService();
+          String result = await sttService.speechToText(path);
 
-    // Here you would implement the stop recording logic
-    // For example: record.stop();
+          setState(() {
+            transcription = result;
+          });
+        } else {
+          throw Exception('Erreur : fichier introuvable.');
+        }
+      }
+    } catch (e) {
+      throw Exception('Erreur lors de l\'arrêt de l\'enregistrement : $e');
+    }
   }
 }
